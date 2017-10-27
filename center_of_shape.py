@@ -7,7 +7,7 @@ ap.add_argument("-i", "--image", required=True)
 args = vars(ap.parse_args())
 
 image = cv2.imread(args["image"])
-image = imutils.resize(image, width=image.shape[1] if image.shape[1]<400 else 400)
+image = imutils.resize(image, width=image.shape[1] if image.shape[1] < 400 else 400)
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 blurred = cv2.GaussianBlur(gray, (5, 5), 0)
 thresh = cv2.threshold(blurred, 65, 255, cv2.THRESH_BINARY)[1]
