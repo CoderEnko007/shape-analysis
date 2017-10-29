@@ -10,7 +10,7 @@ class ShapeDetector:
         shape = "undefined"
         peri = cv2.arcLength(c, True)
         approx = cv2.approxPolyDP(c, 0.04 * peri, True)
-
+        
         if len(approx) == 3:
             shape = "triangle"
         elif len(approx) == 4:
@@ -20,16 +20,25 @@ class ShapeDetector:
         elif len(approx) == 5:
             shape = "pentagon"
         else:
-            shape = "circle"
-            # img = np.zeros(image.shape, image.dtype)
-            # cv2.drawContours(img, [c], -1, (255, 255, 255), -1)
-            # cv2.imwrite("test.jpg", img)
-            # cv2.imshow("undefined", img)
-            # img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-            # circles = cv2.HoughCircles(img, cv2.HOUGH_GRADIENT, 1.2, 90)
-            # print circles
-            # if circles is not None:
-            #     shape = "circle"
+            #shape = "circle"
+            #print image.shape
+            (x, y, w, h) = cv2.boundingRect(c)
+            mask = np.zeros(image.shape, image.dtype)
+            cv2.rectangle(mask, (x, y), (x+w, y+h), 255, -1)
+            #cv2.imshow("mask", mask)
+            img = cv2.bitwise_and(image, image, mask=mask)
+            #cv2.imshow("undefined", img)
+            circles = cv2.HoughCircles(img, cv2.HOUGH_GRADIENT, 1.2, 100)
+            if circles is not None:
+                shape = "circle"
+                # print(circles.shape)
+                # print(circles)
+                # circles = np.round(circles[0, :]).astype("int")
+                # print(circles)
+                # for (x, y, r) in circles:
+                #     cv2.circle(img, (x, y), r, (0, 255, 0), 3)
+                #     cv2.circle(img, (x, y), 2, (255, 0, 0), 3)
+                # cv2.imshow("img", img)
 
         return shape
 

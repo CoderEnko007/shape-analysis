@@ -24,7 +24,7 @@ for c in cnts:
         continue
     cX = int((M["m10"] / M["m00"]) * ratio)
     cY = int((M["m01"] / M["m00"]) * ratio)
-    shape = sd.detect(c, image)
+    shape = sd.detect(c, gray)
 
     c = c.astype("float")
     c *= ratio
